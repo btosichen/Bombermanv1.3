@@ -284,7 +284,7 @@
 
         .control-group {
             position: absolute;
-            /* Adjusted to be higher up to avoid bottom swipe bars */
+            /* Base bottom for D-pad, Action button overrides this */
             bottom: 40px; 
             pointer-events: auto;
             padding-bottom: env(safe-area-inset-bottom); 
@@ -300,8 +300,11 @@
             /* Moved inward from right edge to prevent cutoff */
             /* 右邊距離加大 (靠左一點) */
             right: 110px; 
-            /* 底部距離加大 (往上移動，對齊方向盤高度) */
-            bottom: 70px; 
+            /* 底部距離大幅加大 (讓中心點高於左側方向鍵最高點 200px) */
+            /* D-pad top is approx 40px bottom + 160px height = 200px */
+            /* We want center > 200px. Let's aim for center at 210px. */
+            /* Button height 100px, so bottom should be 210 - 50 = 160px */
+            bottom: 160px; 
             padding-right: env(safe-area-inset-right);
         }
 
