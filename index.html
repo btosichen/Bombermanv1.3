@@ -419,7 +419,8 @@ const CANVAS_WIDTH = COLS * TILE_SIZE, CANVAS_HEIGHT = ROWS * TILE_SIZE;
 const TILE_FLOOR = 0, TILE_WALL = 1, TILE_SOFT = 2;
 
 // ✅ GAS 網址（已寫入）
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbx0lgPWUcFtqAr5dVmXKcOQpa0Fi3Ikg6BMZsbs04EQlWTXp1RVAz1pbJV4aQHzbfXJ/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwKi6la4NV9DYFfkRpnAogOKhsk6koSsVHy41RSudURjv0o7jZv5stL_gubWp512H9C/exec';
+// 若你重新部署了新版 GAS，請將上方網址換成新的部署網址
 
 let currentDifficulty = 'normal';
 let frenzyMode = false;
@@ -475,22 +476,60 @@ let lbData = [];
 let currentLbTab = 'fastest';
 const MEDALS = ['🥇', '🥈', '🥉'];
 
-async function fetchLeaderboard() {
+/**
+ * JSONP 方式讀取 GAS 排行榜
+ * 完全繞過 CORS / 302重定向問題，相容所有瀏覽器
+ */
+function fetchLeaderboard() {
     const content = document.getElementById('lb-content');
-    content.innerHTML = '<div class="lb-loading" id="lb-loading">載入排行榜中</div>';
+    content.innerHTML = '<div class="lb-loading">載入排行榜中</div>';
     document.getElementById('lb-refresh-info').innerText = '';
 
-    try {
-        const res  = await fetch(`${GAS_URL}?action=leaderboard`);
-        const data = await res.json();
-        if (data.status !== 'ok') throw new Error(data.message || '伺服器錯誤');
+    // 清除舊的 JSONP callback 與 script 標籤
+    const OLD_TAG = document.getElementById('__gasJsonpScript');
+    if (OLD_TAG) OLD_TAG.remove();
+
+    const cbName  = '__gasLbCb_' + Date.now();
+    const timeout = setTimeout(() => {
+        cleanup();
+        content.innerHTML = `<div class="lb-err">❌ 載入逾時（10秒）<br>
+            <small>請確認：</small><br>
+            <small>1. GAS 已部署 v2.2（含 JSONP 支援）</small><br>
+            <small>2. 部署設定：執行身分=我，存取=所有人</small></div>`;
+        document.getElementById('lb-refresh-info').innerText = '載入失敗';
+    }, 10000);
+
+    function cleanup() {
+        clearTimeout(timeout);
+        delete window[cbName];
+        const s = document.getElementById('__gasJsonpScript');
+        if (s) s.remove();
+    }
+
+    // GAS 呼叫成功後的 callback
+    window[cbName] = function(data) {
+        cleanup();
+        if (!data || data.status !== 'ok') {
+            content.innerHTML = `<div class="lb-err">❌ GAS 回傳錯誤：${data ? data.message : '無資料'}</div>`;
+            return;
+        }
         lbData = data.records || [];
         const now = new Date().toLocaleTimeString('zh-TW');
-        document.getElementById('lb-refresh-info').innerText = `最後更新：${now}　共 ${lbData.length} 筆記錄`;
+        document.getElementById('lb-refresh-info').innerText =
+            `最後更新：${now}　共 ${lbData.length} 筆記錄`;
         renderLbTab(currentLbTab);
-    } catch (err) {
-        content.innerHTML = `<div class="lb-err">❌ 載入失敗<br><small>${err.message}</small><br><small>請確認 GAS 已重新部署（v2）</small></div>`;
-    }
+    };
+
+    // 建立 script 標籤發送 JSONP 請求
+    const script  = document.createElement('script');
+    script.id     = '__gasJsonpScript';
+    script.src    = `${GAS_URL}?action=leaderboard&callback=${cbName}&t=${Date.now()}`;
+    script.onerror = () => {
+        cleanup();
+        content.innerHTML = `<div class="lb-err">❌ Script 載入失敗<br>
+            <small>請確認 GAS 網址正確且已公開部署</small></div>`;
+    };
+    document.head.appendChild(script);
 }
 
 function showLbTab(tab) {
