@@ -31,24 +31,20 @@
             overscroll-behavior: none;
         }
 
-        /* Container adapts to screen size while keeping aspect ratio */
         #game-container {
             position: relative;
             background-color: #359e35;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            
-            /* Desktop Default */
             width: auto;
             height: 90vh;
             aspect-ratio: 13/11;
             border: 4px solid #444;
         }
 
-        /* Mobile Adjustment: Fill screen better */
         @media (max-width: 900px) {
             #game-container {
                 border: none;
-                height: 100vh; /* Try to fill height */
+                height: 100vh;
                 width: auto;
                 max-width: 100%;
                 aspect-ratio: 13/11;
@@ -62,7 +58,6 @@
             height: 100%;
         }
 
-        /* UI Overlay Styles */
         .overlay {
             position: absolute;
             top: 0;
@@ -74,13 +69,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 20; /* Above game but below controls if needed */
+            z-index: 20;
             text-align: center;
         }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
         h1 {
             font-size: 3rem;
@@ -88,10 +81,8 @@
             text-shadow: 4px 4px #000;
             margin-bottom: 10px;
         }
-        
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-        }
+
+        @media (max-width: 600px) { h1 { font-size: 2rem; } }
 
         .btn {
             background: var(--ui-bg);
@@ -122,7 +113,6 @@
             margin: 5px;
         }
 
-        /* Settings Section */
         .settings-box {
             background: rgba(255,255,255,0.1);
             padding: 10px;
@@ -139,29 +129,13 @@
             justify-content: space-between;
             width: 280px;
         }
-        
-        @media (max-width: 400px) {
-            .setting-row { width: 100%; }
-        }
 
-        /* Toggle Switch */
-        .toggle-btn {
-            background: #555;
-            border: 1px solid #888;
-            color: #bbb;
-        }
-        .toggle-btn.active {
-            background: var(--accent);
-            color: #000;
-            border-color: #fff;
-            font-weight: bold;
-        }
+        @media (max-width: 400px) { .setting-row { width: 100%; } }
 
-        /* Editor Styles */
-        #editor-ui {
-            z-index: 30;
-            background: rgba(0,0,0,0.98);
-        }
+        .toggle-btn { background: #555; border: 1px solid #888; color: #bbb; }
+        .toggle-btn.active { background: var(--accent); color: #000; border-color: #fff; font-weight: bold; }
+
+        #editor-ui { z-index: 30; background: rgba(0,0,0,0.98); }
 
         #editor-grid {
             display: grid;
@@ -177,16 +151,12 @@
             aspect-ratio: 13/11;
         }
 
-        .editor-cell {
-            background: #359e35;
-            border: 1px solid rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
+        .editor-cell { background: #359e35; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; }
         .cell-wall { background-color: #555; }
         .cell-soft { background-color: #d2691e; }
         .cell-floor { background-color: #359e35; }
-        .cell-spawn { 
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text y="8" font-size="8">🚩</text></svg>'); 
+        .cell-spawn {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text y="8" font-size="8">🚩</text></svg>');
             background-repeat: no-repeat;
             background-position: center;
             opacity: 0.7;
@@ -240,11 +210,7 @@
             align-items: center;
         }
 
-        #level-info {
-            color: var(--accent);
-            font-size: 1.5rem;
-            text-shadow: 2px 2px 0 #000;
-        }
+        #level-info { color: var(--accent); font-size: 1.5rem; text-shadow: 2px 2px 0 #000; }
 
         #game-message {
             position: absolute;
@@ -260,23 +226,80 @@
             white-space: nowrap;
             text-align: center;
         }
-        
+
         .p1-color { color: #ff4444; }
         .p2-color { color: #4488ff; }
 
-        /* ================= MOBILE CONTROLS (FLOATING) ================= */
+        /* ---- 記錄通知 Toast ---- */
+        #record-toast {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #44ff44;
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid #44ff44;
+            font-size: 0.85rem;
+            pointer-events: none;
+            z-index: 25;
+            opacity: 0;
+            transition: opacity 0.4s;
+            white-space: nowrap;
+        }
+        #record-toast.show { opacity: 1; }
+
+        /* ---- 結算統計面板 ---- */
+        .stats-panel {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 24px;
+            font-size: 0.85rem;
+            text-align: left;
+            min-width: 260px;
+        }
+        .stats-panel .stat-label { color: #aaa; }
+        .stats-panel .stat-value { color: #fff; font-weight: bold; text-align: right; }
+        .stat-highlight { color: var(--accent) !important; }
+
+        /* ---- GAS 設定輸入框 ---- */
+        #gas-url-input {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #666;
+            color: #fff;
+            padding: 6px 10px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            width: 280px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+        #gas-url-input:focus { outline: none; border-color: var(--accent); }
+        .gas-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        /* ================= MOBILE CONTROLS ================= */
         #mobile-controls {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             z-index: 50;
             pointer-events: none;
         }
 
-        /* Show controls on touch devices */
         @media (hover: none) and (pointer: coarse) {
             #mobile-controls { display: block; }
             .controls-info { display: none; }
@@ -284,34 +307,17 @@
 
         .control-group {
             position: absolute;
-            /* Base bottom for D-pad, Action button overrides this */
-            bottom: 40px; 
+            bottom: 40px;
             pointer-events: auto;
-            padding-bottom: env(safe-area-inset-bottom); 
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        .d-pad-container {
-            /* Moved inward from left edge */
-            left: 40px;
-            padding-left: env(safe-area-inset-left);
-        }
-
-        .action-container {
-            /* Moved inward from right edge to prevent cutoff */
-            /* 右邊距離加大 (靠左一點) */
-            right: 110px; 
-            /* 底部距離大幅加大 (讓中心點高於左側方向鍵最高點 200px) */
-            /* D-pad top is approx 40px bottom + 160px height = 200px */
-            /* We want center > 200px. Let's aim for center at 210px. */
-            /* Button height 100px, so bottom should be 210 - 50 = 160px */
-            bottom: 160px; 
-            padding-right: env(safe-area-inset-right);
-        }
+        .d-pad-container { left: 40px; padding-left: env(safe-area-inset-left); }
+        .action-container { right: 110px; bottom: 160px; padding-right: env(safe-area-inset-right); }
 
         .d-pad {
             position: relative;
-            width: 160px;
-            height: 160px;
+            width: 160px; height: 160px;
             background: rgba(0,0,0,0.2);
             border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.1);
@@ -319,10 +325,9 @@
 
         .touch-btn {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            width: 50px; height: 50px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -333,45 +338,30 @@
             color: rgba(255,255,255,0.9);
         }
 
-        .touch-btn:active, .touch-btn.active {
-            background: var(--accent);
-            color: #000;
-            transform: scale(0.9);
-        }
+        .touch-btn:active, .touch-btn.active { background: var(--accent); color: #000; transform: scale(0.9); }
 
-        /* Improved D-Pad Positioning */
-        .btn-up { top: 5px; left: 55px; }
-        .btn-down { bottom: 5px; left: 55px; }
-        .btn-left { top: 55px; left: 5px; }
-        .btn-right { top: 55px; right: 5px; }
+        .btn-up    { top: 5px;    left: 55px; }
+        .btn-down  { bottom: 5px; left: 55px; }
+        .btn-left  { top: 55px;   left: 5px;  }
+        .btn-right { top: 55px;   right: 5px; }
 
         .btn-bomb-touch {
-            width: 100px;
-            height: 100px;
+            width: 100px; height: 100px;
             border-radius: 50%;
-            background: rgba(255, 68, 68, 0.5);
-            border: 4px solid rgba(255, 68, 68, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: white;
+            background: rgba(255,68,68,0.5);
+            border: 4px solid rgba(255,68,68,0.9);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px; color: white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .btn-bomb-touch:active, .btn-bomb-touch.active {
-            background: #ff4444;
-            transform: scale(0.9);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
+        .btn-bomb-touch:active, .btn-bomb-touch.active { background: #ff4444; transform: scale(0.9); }
 
         /* Rotate Overlay */
         #rotate-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #111;
             z-index: 100;
             color: white;
@@ -381,43 +371,37 @@
             text-align: center;
         }
 
-        #rotate-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: rotate-anim 2s infinite;
-        }
+        #rotate-icon { font-size: 80px; margin-bottom: 20px; animation: rotate-anim 2s infinite; }
 
         @keyframes rotate-anim {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(90deg); }
-            50% { transform: rotate(90deg); }
-            75% { transform: rotate(0deg); }
+            0%   { transform: rotate(0deg); }
+            25%  { transform: rotate(90deg); }
+            50%  { transform: rotate(90deg); }
+            75%  { transform: rotate(0deg); }
             100% { transform: rotate(0deg); }
         }
 
-        /* Show rotate overlay on portrait mobile */
         @media screen and (orientation: portrait) and (max-width: 900px) {
             #rotate-overlay { display: flex; }
-            #mobile-controls { display: none; } /* Hide controls in portrait */
+            #mobile-controls { display: none; }
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Orientation Warning -->
     <div id="rotate-overlay">
         <div id="rotate-icon">📱➡️</div>
         <h2>請將手機轉為橫向<br>以獲得最佳體驗</h2>
     </div>
 
     <div id="game-container">
-        
+
         <div id="hud">
             <div class="player-stat" id="p1-stats">
                 <span class="p1-color">P1</span>
                 <span>♥ <span id="p1-lives">3</span></span>
                 <span>💣 <span id="p1-bombs">1</span></span>
+                <span>⏱ <span id="hud-timer">0:00</span></span>
             </div>
             <div id="level-info">第 1 關</div>
             <div class="player-stat" id="p2-stats" style="opacity: 0;">
@@ -428,14 +412,17 @@
         </div>
 
         <canvas id="gameCanvas" width="832" height="704"></canvas>
-        
+
         <div id="game-message"></div>
+
+        <!-- 記錄通知 -->
+        <div id="record-toast">📊 已記錄到 Google 試算表！</div>
 
         <!-- Main Menu -->
         <div id="main-menu" class="overlay">
             <h1>BOMBER ARENA</h1>
             <h3 style="color:#aaa; margin-top:-10px;">MOBILE EDITION</h3>
-            
+
             <div class="settings-box">
                 <div class="setting-row">
                     <span>難度 (AI):</span>
@@ -445,13 +432,22 @@
                     <span>道具瘋狂模式:</span>
                     <button id="btn-frenzy" class="btn btn-small toggle-btn" onclick="toggleFrenzy()">OFF</button>
                 </div>
+                <div class="setting-row">
+                    <span>📊 Google 記錄:</span>
+                    <button id="btn-record" class="btn btn-small toggle-btn" onclick="toggleRecord()">OFF</button>
+                </div>
+                <!-- GAS URL 輸入 -->
+                <div class="gas-row" id="gas-url-row" style="display:none;">
+                    <span>GAS 網路應用程式網址：</span>
+                    <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/AKfycbxk8U66qm9dP8vKx24BIi367a2no_JpugIFNWfl3nKhAGCgjgPn6b4mQcmdS0WaUhqw/exec" oninput="saveGasUrl()" />
+                </div>
             </div>
 
             <button class="btn" onclick="startGame('single')">單人闖關 (Story)</button>
             <button class="btn" onclick="startGame('versus')">雙人對戰 (Vs)</button>
             <button class="btn" onclick="requestFullScreen()">全螢幕 (Fullscreen)</button>
             <button class="btn" style="border-color: #aaa; color: #aaa;" onclick="openEditor()">關卡編輯器 (Editor)</button>
-            
+
             <div class="controls-info">
                 <div>
                     <strong class="p1-color">PLAYER 1</strong><br>
@@ -481,6 +477,21 @@
         <div id="game-over" class="overlay hidden">
             <h1 id="go-title">GAME OVER</h1>
             <h2 id="go-reason">Reason</h2>
+
+            <!-- 結算統計面板 -->
+            <div class="stats-panel" id="end-stats-panel">
+                <span class="stat-label">⏱ 用時</span>       <span class="stat-value" id="stat-time">-</span>
+                <span class="stat-label">💀 擊殺敵人</span>    <span class="stat-value" id="stat-kills">-</span>
+                <span class="stat-label">✨ 收集道具</span>    <span class="stat-value" id="stat-powerups">-</span>
+                <span class="stat-label">💥 最高連爆</span>    <span class="stat-value" id="stat-combo">-</span>
+                <span class="stat-label">♥ 剩餘生命</span>    <span class="stat-value" id="stat-lives">-</span>
+                <span class="stat-label">💣 炸彈數量</span>    <span class="stat-value" id="stat-bombs">-</span>
+            </div>
+
+            <div id="record-status" style="font-size:0.8rem; color:#aaa; margin: 4px 0;">
+                📊 <span id="record-status-text">-</span>
+            </div>
+
             <div id="next-level-btn-container" class="hidden">
                 <p style="color: #ccc;">能力保留至下一關！</p>
                 <button class="btn" onclick="gameInstance.nextLevel()">下一關</button>
@@ -489,14 +500,14 @@
         </div>
     </div>
 
-    <!-- Mobile Controls (Floating Over Everything) -->
+    <!-- Mobile Controls -->
     <div id="mobile-controls">
         <div class="control-group d-pad-container">
             <div class="d-pad">
-                <div class="touch-btn btn-up" data-key="ArrowUp">↑</div>
-                <div class="touch-btn btn-left" data-key="ArrowLeft">←</div>
+                <div class="touch-btn btn-up"    data-key="ArrowUp">↑</div>
+                <div class="touch-btn btn-left"  data-key="ArrowLeft">←</div>
                 <div class="touch-btn btn-right" data-key="ArrowRight">→</div>
-                <div class="touch-btn btn-down" data-key="ArrowDown">↓</div>
+                <div class="touch-btn btn-down"  data-key="ArrowDown">↓</div>
             </div>
         </div>
         <div class="control-group action-container">
@@ -506,22 +517,81 @@
 
     <script>
         /* ================= CONFIGURATION ================= */
-        const TILE_SIZE = 64; 
+        const TILE_SIZE = 64;
         const ROWS = 11;
         const COLS = 13;
-        const CANVAS_WIDTH = COLS * TILE_SIZE;
+        const CANVAS_WIDTH  = COLS * TILE_SIZE;
         const CANVAS_HEIGHT = ROWS * TILE_SIZE;
-        
+
         const TILE_FLOOR = 0;
-        const TILE_WALL = 1;
-        const TILE_SOFT = 2;
-        
+        const TILE_WALL  = 1;
+        const TILE_SOFT  = 2;
+
         // Settings State
-        let currentDifficulty = 'normal'; 
-        let frenzyMode = false;
+        let currentDifficulty = 'normal';
+        let frenzyMode    = false;
         let customMapData = null;
 
-        /* ================= HELPER FUNCTIONS ================= */
+        // ---- Google Sheets 記錄設定 ----
+        let recordEnabled = false;
+        let GAS_URL = localStorage.getItem('bomberGasUrl') || '';
+
+        // 初始化時還原 URL
+        if (GAS_URL) document.getElementById('gas-url-input').value = GAS_URL;
+
+        function saveGasUrl() {
+            GAS_URL = document.getElementById('gas-url-input').value.trim();
+            localStorage.setItem('bomberGasUrl', GAS_URL);
+        }
+
+        function toggleRecord() {
+            recordEnabled = !recordEnabled;
+            const btn = document.getElementById('btn-record');
+            const urlRow = document.getElementById('gas-url-row');
+            if (recordEnabled) {
+                btn.innerText = "ON";
+                btn.classList.add('active');
+                urlRow.style.display = 'flex';
+            } else {
+                btn.innerText = "OFF";
+                btn.classList.remove('active');
+                urlRow.style.display = 'none';
+            }
+        }
+
+        /**
+         * 送出記錄到 Google Sheets (via GAS)
+         * 使用 no-cors 模式送出，避免 CORS 問題（GAS 會收到，但回應無法讀取）
+         */
+        async function sendRecord(payload) {
+            if (!recordEnabled || !GAS_URL) return;
+            document.getElementById('record-status-text').innerText = '傳送中...';
+            try {
+                // 加上裝置類型
+                payload.device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',   // GAS 需用 no-cors
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                document.getElementById('record-status-text').innerText = '✅ 已記錄到試算表';
+                showToast('📊 已記錄到 Google 試算表！');
+            } catch (err) {
+                document.getElementById('record-status-text').innerText = '❌ 傳送失敗：' + err.message;
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('record-toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        /* ================= HELPER ================= */
         function requestFullScreen() {
             const el = document.documentElement;
             if (el.requestFullscreen) el.requestFullscreen();
@@ -530,20 +600,22 @@
             else if (el.msRequestFullscreen) el.msRequestFullscreen();
         }
 
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
         /* ================= AUDIO ENGINE ================= */
         const AudioEngine = {
             ctx: null,
             init: function() {
-                if (!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
+                if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
             },
             playTone: function(freq, type, duration, vol = 0.1) {
                 if (!this.ctx) return;
-                const osc = this.ctx.createOscillator();
+                const osc  = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
@@ -555,23 +627,23 @@
                 osc.stop(this.ctx.currentTime + duration);
             },
             playBombPlant: function() { this.playTone(600, 'sine', 0.1); },
-            playExplosion: function() { 
+            playExplosion: function() {
                 if (!this.ctx) return;
                 const bufferSize = this.ctx.sampleRate * 0.5;
                 const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
-                const noise = this.ctx.createBufferSource();
+                const data   = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                const noise  = this.ctx.createBufferSource();
                 noise.buffer = buffer;
-                const gain = this.ctx.createGain();
+                const gain   = this.ctx.createGain();
                 gain.gain.setValueAtTime(0.5, this.ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
                 noise.connect(gain);
                 gain.connect(this.ctx.destination);
                 noise.start();
             },
-            playPowerup: function() { 
-                this.playTone(1200, 'square', 0.1, 0.05); 
+            playPowerup: function() {
+                this.playTone(1200, 'square', 0.1, 0.05);
                 setTimeout(() => this.playTone(1600, 'square', 0.1, 0.05), 100);
             },
             playDie: function() {
@@ -590,98 +662,100 @@
         class Game {
             constructor() {
                 this.canvas = document.getElementById('gameCanvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.lastTime = 0;
-                this.map = [];
-                this.entities = [];
-                this.bombs = [];
+                this.ctx    = this.canvas.getContext('2d');
+                this.lastTime   = 0;
+                this.map        = [];
+                this.entities   = [];
+                this.bombs      = [];
                 this.explosions = [];
-                this.powerups = [];
-                this.mode = 'single';
-                this.isRunning = false;
-                this.isPaused = false;
-                this.roundOver = false;
-                this.level = 1;
-                this.savedStats = null; 
-                
+                this.powerups   = [];
+                this.mode       = 'single';
+                this.isRunning  = false;
+                this.isPaused   = false;
+                this.roundOver  = false;
+                this.level      = 1;
+                this.savedStats = null;
+
+                // ---- 統計追蹤 ----
+                this.levelTimer   = 0;   // 本關耗時（秒）
+                this.killCount    = 0;   // 本關擊殺
+                this.powerupCount = 0;   // 本關收集道具
+                this.maxCombo     = 0;   // 單次爆炸最多消滅敵人
+                this.events       = [];  // 事件流水帳
+
                 this.keys = {};
                 window.addEventListener('keydown', e => this.keys[e.code] = true);
-                window.addEventListener('keyup', e => this.keys[e.code] = false);
+                window.addEventListener('keyup',   e => this.keys[e.code] = false);
 
-                // Setup Mobile Controls
                 this.setupTouchControls();
             }
 
             setupTouchControls() {
                 const touchBtns = document.querySelectorAll('.touch-btn, .btn-bomb-touch');
-                
                 const handleTouch = (e, state) => {
-                    e.preventDefault(); // Prevent scrolling/zooming
+                    e.preventDefault();
                     const key = e.currentTarget.getAttribute('data-key');
                     if (key) {
                         this.keys[key] = state;
-                        if(state) e.currentTarget.classList.add('active');
-                        else e.currentTarget.classList.remove('active');
+                        if (state) e.currentTarget.classList.add('active');
+                        else       e.currentTarget.classList.remove('active');
                     }
                 };
-
                 touchBtns.forEach(btn => {
-                    btn.addEventListener('touchstart', (e) => handleTouch(e, true), {passive: false});
-                    btn.addEventListener('touchend', (e) => handleTouch(e, false), {passive: false});
-                    // Mouse fallback
-                    btn.addEventListener('mousedown', (e) => handleTouch(e, true));
-                    btn.addEventListener('mouseup', (e) => handleTouch(e, false));
+                    btn.addEventListener('touchstart', (e) => handleTouch(e, true),  {passive: false});
+                    btn.addEventListener('touchend',   (e) => handleTouch(e, false), {passive: false});
+                    btn.addEventListener('mousedown',  (e) => handleTouch(e, true));
+                    btn.addEventListener('mouseup',    (e) => handleTouch(e, false));
                     btn.addEventListener('mouseleave', (e) => handleTouch(e, false));
                 });
             }
 
             reset(mode, keepProgress = false) {
-                this.mode = mode;
-                this.map = [];
-                this.entities = [];
-                this.bombs = [];
+                this.mode       = mode;
+                this.map        = [];
+                this.entities   = [];
+                this.bombs      = [];
                 this.explosions = [];
-                this.powerups = [];
-                this.roundOver = false;
-                this.isRunning = true;
+                this.powerups   = [];
+                this.roundOver  = false;
+                this.isRunning  = true;
+
+                // 統計重置
+                this.levelTimer   = 0;
+                this.killCount    = 0;
+                this.powerupCount = 0;
+                this.maxCombo     = 0;
+                this.events       = [];
 
                 if (!keepProgress) {
-                    this.level = 1;
+                    this.level      = 1;
                     this.savedStats = null;
                 }
 
-                // Update HUD Level
-                const lvlText = (mode === 'single') ? `第 ${this.level} 關` : '對戰模式';
-                document.getElementById('level-info').innerText = lvlText;
+                document.getElementById('level-info').innerText =
+                    (mode === 'single') ? `第 ${this.level} 關` : '對戰模式';
+                document.getElementById('record-status-text').innerText = '-';
 
                 this.generateMap();
-                
-                // Player 1 Setup
-                this.p1 = new Player(1, 1, 1, 'Red'); 
-                // Restore stats if progressing
+
+                this.p1 = new Player(1, 1, 1, 'Red');
                 if (this.savedStats) {
-                    this.p1.maxBombs = this.savedStats.maxBombs;
+                    this.p1.maxBombs  = this.savedStats.maxBombs;
                     this.p1.bombRange = this.savedStats.bombRange;
-                    this.p1.speed = this.savedStats.speed;
+                    this.p1.speed     = this.savedStats.speed;
                 } else if (frenzyMode) {
-                    this.p1.maxBombs = 3;
+                    this.p1.maxBombs  = 3;
                     this.p1.bombRange = 3;
-                    this.p1.speed += 20;
+                    this.p1.speed    += 20;
                 }
                 this.entities.push(this.p1);
 
                 if (mode === 'versus') {
-                    // P2 Setup
                     this.p2 = new Player(COLS - 2, ROWS - 2, 2, 'Blue');
-                    if (frenzyMode) {
-                        this.p2.maxBombs = 3;
-                        this.p2.bombRange = 3;
-                        this.p2.speed += 20;
-                    }
+                    if (frenzyMode) { this.p2.maxBombs = 3; this.p2.bombRange = 3; this.p2.speed += 20; }
                     this.entities.push(this.p2);
                     document.getElementById('p2-stats').style.opacity = 1;
                 } else {
-                    // Single Player Enemy Spawning Logic
                     let enemyCount = 2 + this.level;
                     if (currentDifficulty === 'hard') enemyCount += 2;
                     enemyCount = Math.min(enemyCount, 12);
@@ -689,37 +763,26 @@
                     document.getElementById('p2-stats').style.opacity = 0;
                 }
 
-                const msg = (mode === 'single') ? `第 ${this.level} 關` : "READY?";
+                const msg   = (mode === 'single') ? `第 ${this.level} 關` : "READY?";
                 const msgEl = document.getElementById('game-message');
-                if(msgEl) msgEl.innerText = msg;
-                setTimeout(() => {
-                    if(msgEl) msgEl.innerText = "";
-                }, 2000);
-                
+                if (msgEl) msgEl.innerText = msg;
+                setTimeout(() => { if (msgEl) msgEl.innerText = ""; }, 2000);
+
                 requestAnimationFrame(t => this.loop(t));
             }
 
             generateMap() {
-                if (customMapData) {
-                    this.map = JSON.parse(JSON.stringify(customMapData));
-                    return;
-                }
-
+                if (customMapData) { this.map = JSON.parse(JSON.stringify(customMapData)); return; }
                 for (let r = 0; r < ROWS; r++) {
                     const row = [];
                     for (let c = 0; c < COLS; c++) {
-                        if (r === 0 || c === 0 || r === ROWS - 1 || c === COLS - 1) {
-                            row.push(TILE_WALL);
-                        } else if (r % 2 === 0 && c % 2 === 0) {
-                            row.push(TILE_WALL);
-                        } else {
+                        if (r === 0 || c === 0 || r === ROWS-1 || c === COLS-1) { row.push(TILE_WALL); }
+                        else if (r % 2 === 0 && c % 2 === 0) { row.push(TILE_WALL); }
+                        else {
                             const isP1Safe = (r < 3 && c < 3);
-                            const isP2Safe = (r > ROWS - 4 && c > COLS - 4);
-                            if (!isP1Safe && !isP2Safe && Math.random() < 0.7) {
-                                row.push(TILE_SOFT);
-                            } else {
-                                row.push(TILE_FLOOR);
-                            }
+                            const isP2Safe = (r > ROWS-4 && c > COLS-4);
+                            if (!isP1Safe && !isP2Safe && Math.random() < 0.7) row.push(TILE_SOFT);
+                            else row.push(TILE_FLOOR);
                         }
                     }
                     this.map.push(row);
@@ -727,23 +790,19 @@
             }
 
             spawnEnemies(count) {
-                let spawned = 0;
-                let attempts = 0;
+                let spawned = 0, attempts = 0;
                 const speedMultiplier = 1 + (this.level - 1) * 0.05;
-
                 while (spawned < count && attempts < 200) {
                     let r = Math.floor(Math.random() * ROWS);
                     let c = Math.floor(Math.random() * COLS);
-                    
                     if (this.map[r][c] === TILE_FLOOR && r > 4 && c > 4) {
                         let type = 'normal';
                         if (currentDifficulty === 'easy') type = 'easy';
                         else if (currentDifficulty === 'hard') type = 'hard';
                         else {
                             if (this.level >= 3 && Math.random() < 0.3) type = 'hard';
-                            else if (this.level >= 5 && Math.random() < 0.5) type = 'hard';
+                            if (this.level >= 5 && Math.random() < 0.5) type = 'hard';
                         }
-
                         const enemy = new Enemy(c, r, type);
                         enemy.speed *= speedMultiplier;
                         this.entities.push(enemy);
@@ -755,44 +814,43 @@
 
             loop(timestamp) {
                 if (!this.isRunning) return;
-                const dt = (timestamp - this.lastTime) / 1000;
+                const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1); // 最多 0.1s 避免跳幀
                 this.lastTime = timestamp;
-
-                if (!this.isPaused && !this.roundOver) {
-                    this.update(dt);
-                }
+                if (!this.isPaused && !this.roundOver) this.update(dt);
                 this.draw();
                 requestAnimationFrame(t => this.loop(t));
             }
 
             update(dt) {
-                this.entities = this.entities.filter(e => e.alive);
+                // 計時器
+                this.levelTimer += dt;
+                const timerEl = document.getElementById('hud-timer');
+                if (timerEl) timerEl.innerText = formatTime(this.levelTimer);
+
+                this.entities   = this.entities.filter(e => e.alive);
                 this.entities.forEach(e => e.update(dt, this));
 
-                this.bombs = this.bombs.filter(b => !b.exploded);
+                this.bombs      = this.bombs.filter(b => !b.exploded);
                 this.bombs.forEach(b => b.update(dt, this));
 
                 this.explosions = this.explosions.filter(e => e.active);
                 this.explosions.forEach(e => e.update(dt));
 
-                // Win Conditions
+                // 勝負判定
                 if (this.mode === 'versus') {
                     const p1Alive = this.entities.find(e => e.id === 1 && e.alive);
                     const p2Alive = this.entities.find(e => e.id === 2 && e.alive);
                     if (!p1Alive || !p2Alive) {
-                        this.endGame(p1Alive ? "Player 1 Wins!" : (p2Alive ? "Player 2 Wins!" : "Draw!"), false);
+                        const result = p1Alive ? "P1獲勝" : (p2Alive ? "P2獲勝" : "平手");
+                        this.endGame(p1Alive ? "Player 1 Wins!" : (p2Alive ? "Player 2 Wins!" : "Draw!"), false, result);
                     }
                 } else {
-                    // Single Player
-                    const p1 = this.entities.find(e => e.id === 1);
+                    const p1      = this.entities.find(e => e.id === 1);
                     const enemies = this.entities.filter(e => e.type === 'enemy');
-                    
-                    if (!p1 || !p1.alive) {
-                        this.endGame("Game Over!", false);
-                    } else if (enemies.length === 0) {
-                        this.levelCleared();
-                    }
+                    if (!p1 || !p1.alive) { this.endGame("Game Over!", false, "遊戲結束"); }
+                    else if (enemies.length === 0) { this.levelCleared(); }
                 }
+
                 this.updateHUD();
             }
 
@@ -807,17 +865,101 @@
                 }
             }
 
+            // 記錄一筆事件
+            logEvent(type, desc) {
+                this.events.push({ type, desc });
+            }
+
+            // 建立送出的 payload
+            buildPayload(result) {
+                return {
+                    mode:        this.mode,
+                    difficulty:  currentDifficulty,
+                    frenzy:      frenzyMode,
+                    level:       this.level,
+                    result:      result,
+                    timeSec:     Math.round(this.levelTimer),
+                    p1Lives:     this.p1 ? this.p1.lives    : 0,
+                    p1MaxBombs:  this.p1 ? this.p1.maxBombs  : 0,
+                    p1BombRange: this.p1 ? this.p1.bombRange : 0,
+                    p1Speed:     this.p1 ? Math.round(this.p1.speed) : 0,
+                    kills:       this.killCount,
+                    powerups:    this.powerupCount,
+                    maxCombo:    this.maxCombo,
+                    events:      this.events,
+                    note:        '',
+                };
+            }
+
+            // 更新結算畫面的統計
+            updateEndStats() {
+                document.getElementById('stat-time').innerText    = formatTime(this.levelTimer);
+                document.getElementById('stat-kills').innerText   = `${this.killCount} 隻`;
+                document.getElementById('stat-powerups').innerText = `${this.powerupCount} 個`;
+                document.getElementById('stat-combo').innerText   = `${this.maxCombo} 隻`;
+                document.getElementById('stat-lives').innerText   = this.p1 ? `${this.p1.lives} ♥` : '-';
+                document.getElementById('stat-bombs').innerText   = this.p1 ? `${this.p1.maxBombs} 💣` : '-';
+            }
+
+            levelCleared() {
+                this.roundOver = true;
+                AudioEngine.playWin();
+                this.logEvent('通關', `第 ${this.level} 關通關，用時 ${Math.round(this.levelTimer)} 秒`);
+
+                this.savedStats = {
+                    maxBombs:  this.p1.maxBombs,
+                    bombRange: this.p1.bombRange,
+                    speed:     this.p1.speed
+                };
+
+                const payload = this.buildPayload('通關');
+                sendRecord(payload);
+
+                setTimeout(() => {
+                    this.updateEndStats();
+                    document.getElementById('game-over').classList.remove('hidden');
+                    document.getElementById('go-title').innerText    = "關卡通過！";
+                    document.getElementById('go-title').style.color  = "#44ff44";
+                    document.getElementById('go-reason').innerText   = `完成第 ${this.level} 關`;
+                    document.getElementById('next-level-btn-container').classList.remove('hidden');
+                    document.getElementById('return-menu-btn').classList.add('hidden');
+                    this.isRunning = false;
+                }, 1000);
+            }
+
+            nextLevel() {
+                this.level++;
+                document.getElementById('game-over').classList.add('hidden');
+                this.reset('single', true);
+            }
+
+            endGame(reason, win, result = "遊戲結束") {
+                this.roundOver = true;
+                this.logEvent('結束', reason);
+                const payload = this.buildPayload(result);
+                sendRecord(payload);
+
+                setTimeout(() => {
+                    this.updateEndStats();
+                    document.getElementById('game-over').classList.remove('hidden');
+                    document.getElementById('go-title').innerText   = "GAME OVER";
+                    document.getElementById('go-title').style.color = "#ff4444";
+                    document.getElementById('go-reason').innerText  = reason;
+                    document.getElementById('next-level-btn-container').classList.add('hidden');
+                    document.getElementById('return-menu-btn').classList.remove('hidden');
+                    this.isRunning = false;
+                }, 1000);
+            }
+
             draw() {
                 this.ctx.fillStyle = '#359e35';
                 this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-                // Draw Map
                 for (let r = 0; r < ROWS; r++) {
                     for (let c = 0; c < COLS; c++) {
                         const tile = this.map[r][c];
                         const x = c * TILE_SIZE;
                         const y = r * TILE_SIZE;
-
                         if (tile === TILE_WALL) {
                             this.ctx.fillStyle = '#555';
                             this.ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
@@ -844,22 +986,9 @@
                     const y = p.r * TILE_SIZE + TILE_SIZE/2;
                     this.ctx.beginPath();
                     this.ctx.arc(x, y, 15, 0, Math.PI*2);
-                    if (p.type === 'range') {
-                        this.ctx.fillStyle = 'gold';
-                        this.ctx.fill();
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fillText('🔥', x-8, y+5);
-                    } else if (p.type === 'speed') {
-                        this.ctx.fillStyle = 'cyan';
-                        this.ctx.fill();
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fillText('⚡', x-8, y+5);
-                    } else if (p.type === 'bomb') {
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fill();
-                        this.ctx.fillStyle = 'white';
-                        this.ctx.fillText('💣', x-8, y+5);
-                    }
+                    if (p.type === 'range')      { this.ctx.fillStyle = 'gold';  this.ctx.fill(); this.ctx.fillStyle = 'black'; this.ctx.fillText('🔥', x-8, y+5); }
+                    else if (p.type === 'speed') { this.ctx.fillStyle = 'cyan';  this.ctx.fill(); this.ctx.fillStyle = 'black'; this.ctx.fillText('⚡', x-8, y+5); }
+                    else if (p.type === 'bomb')  { this.ctx.fillStyle = 'black'; this.ctx.fill(); this.ctx.fillStyle = 'white'; this.ctx.fillText('💣', x-8, y+5); }
                 });
 
                 this.bombs.forEach(b => {
@@ -868,7 +997,7 @@
                     const scale = 1 + Math.sin(Date.now() / 100) * 0.1;
                     this.ctx.fillStyle = 'black';
                     this.ctx.beginPath();
-                    this.ctx.arc(x, y, 20 * scale, 0, Math.PI * 2);
+                    this.ctx.arc(x, y, 20*scale, 0, Math.PI*2);
                     this.ctx.fill();
                     this.ctx.strokeStyle = 'orange';
                     this.ctx.lineWidth = 3;
@@ -891,65 +1020,21 @@
                     this.ctx.globalAlpha = 1.0;
                 });
             }
-
-            levelCleared() {
-                this.roundOver = true;
-                AudioEngine.playWin();
-                
-                this.savedStats = {
-                    maxBombs: this.p1.maxBombs,
-                    bombRange: this.p1.bombRange,
-                    speed: this.p1.speed
-                };
-
-                setTimeout(() => {
-                    document.getElementById('game-over').classList.remove('hidden');
-                    document.getElementById('go-title').innerText = "關卡通過！";
-                    document.getElementById('go-title').style.color = "#44ff44";
-                    document.getElementById('go-reason').innerText = `完成第 ${this.level} 關`;
-                    
-                    document.getElementById('next-level-btn-container').classList.remove('hidden');
-                    document.getElementById('return-menu-btn').classList.add('hidden');
-                    
-                    this.isRunning = false;
-                }, 1000);
-            }
-
-            nextLevel() {
-                this.level++;
-                document.getElementById('game-over').classList.add('hidden');
-                this.reset('single', true); 
-            }
-
-            endGame(reason, win) {
-                this.roundOver = true;
-                setTimeout(() => {
-                    document.getElementById('game-over').classList.remove('hidden');
-                    document.getElementById('go-title').innerText = "GAME OVER";
-                    document.getElementById('go-title').style.color = "#ff4444";
-                    document.getElementById('go-reason').innerText = reason;
-                    
-                    document.getElementById('next-level-btn-container').classList.add('hidden');
-                    document.getElementById('return-menu-btn').classList.remove('hidden');
-                    
-                    this.isRunning = false;
-                }, 1000);
-            }
         }
 
         /* ================= ENTITIES ================= */
 
         class Entity {
             constructor(c, r, type) {
-                this.x = c * TILE_SIZE;
-                this.y = r * TILE_SIZE;
-                this.w = TILE_SIZE - 20;
-                this.h = TILE_SIZE - 20;
-                this.type = type;
+                this.x     = c * TILE_SIZE;
+                this.y     = r * TILE_SIZE;
+                this.w     = TILE_SIZE - 20;
+                this.h     = TILE_SIZE - 20;
+                this.type  = type;
                 this.alive = true;
                 this.speed = 200;
-                this.offX = (TILE_SIZE - this.w) / 2;
-                this.offY = (TILE_SIZE - this.h) / 2;
+                this.offX  = (TILE_SIZE - this.w) / 2;
+                this.offY  = (TILE_SIZE - this.h) / 2;
             }
 
             getGridPos() {
@@ -961,23 +1046,18 @@
 
             checkCollision(newX, newY, game) {
                 const points = [
-                    {x: newX + this.offX, y: newY + this.offY},
+                    {x: newX + this.offX,          y: newY + this.offY},
                     {x: newX + this.offX + this.w, y: newY + this.offY},
-                    {x: newX + this.offX, y: newY + this.offY + this.h},
+                    {x: newX + this.offX,          y: newY + this.offY + this.h},
                     {x: newX + this.offX + this.w, y: newY + this.offY + this.h}
                 ];
-
                 for (let p of points) {
                     const c = Math.floor(p.x / TILE_SIZE);
                     const r = Math.floor(p.y / TILE_SIZE);
                     if (r < 0 || c < 0 || r >= ROWS || c >= COLS) return true;
                     if (game.map[r][c] === TILE_WALL || game.map[r][c] === TILE_SOFT) return true;
-
                     const bomb = game.bombs.find(b => b.r === r && b.c === c && !b.exploded);
-                    if (bomb) {
-                        if (bomb.passableEntities.includes(this)) continue; 
-                        return true;
-                    }
+                    if (bomb) { if (bomb.passableEntities.includes(this)) continue; return true; }
                 }
                 return false;
             }
@@ -986,13 +1066,14 @@
         class Player extends Entity {
             constructor(c, r, id, colorName) {
                 super(c, r, 'player');
-                this.id = id;
-                this.color = colorName === 'Red' ? '#e74c3c' : '#3498db';
-                this.maxBombs = 1;
-                this.bombRange = 2;
+                this.id          = id;
+                this.color       = colorName === 'Red' ? '#e74c3c' : '#3498db';
+                this.maxBombs    = 1;
+                this.bombRange   = 2;
                 this.placedBombs = 0;
-                this.lives = 3;
-                this.invincible = 0;
+                this.lives       = 3;
+                this.invincible  = 0;
+                this._bombPressed = false; // 防連按
             }
 
             update(dt, game) {
@@ -1000,17 +1081,19 @@
                 let dx = 0, dy = 0;
 
                 if (this.id === 1) {
-                    if (game.keys['ArrowUp']) dy = -1;
-                    if (game.keys['ArrowDown']) dy = 1;
-                    if (game.keys['ArrowLeft']) dx = -1;
-                    if (game.keys['ArrowRight']) dx = 1;
-                    if (game.keys['Space']) this.placeBomb(game);
+                    if (game.keys['ArrowUp'])    dy = -1;
+                    if (game.keys['ArrowDown'])  dy =  1;
+                    if (game.keys['ArrowLeft'])  dx = -1;
+                    if (game.keys['ArrowRight']) dx =  1;
+                    if (game.keys['Space']) { if (!this._bombPressed) { this.placeBomb(game); this._bombPressed = true; } }
+                    else { this._bombPressed = false; }
                 } else {
-                    if (game.keys['KeyW']) dy = -1;
-                    if (game.keys['KeyS']) dy = 1;
-                    if (game.keys['KeyA']) dx = -1;
-                    if (game.keys['KeyD']) dx = 1;
-                    if (game.keys['ShiftLeft']) this.placeBomb(game);
+                    if (game.keys['KeyW'])     dy = -1;
+                    if (game.keys['KeyS'])     dy =  1;
+                    if (game.keys['KeyA'])     dx = -1;
+                    if (game.keys['KeyD'])     dx =  1;
+                    if (game.keys['ShiftLeft']) { if (!this._bombPressed) { this.placeBomb(game); this._bombPressed = true; } }
+                    else { this._bombPressed = false; }
                 }
 
                 if (dx !== 0 || dy !== 0) {
@@ -1021,26 +1104,27 @@
                     if (!this.checkCollision(this.x, nextY, game)) this.y = nextY;
                 }
 
-                // Collisions
                 const center = this.getGridPos();
                 const pIndex = game.powerups.findIndex(p => p.c === center.c && p.r === center.r);
                 if (pIndex !== -1) {
                     this.collectPowerup(game.powerups[pIndex]);
                     game.powerups.splice(pIndex, 1);
+                    game.powerupCount++;                            // ← 統計
+                    game.logEvent('道具', `P${this.id} 收集 ${game.powerups[pIndex]?.type || '?'}`);
                     AudioEngine.playPowerup();
                 }
 
                 if (this.invincible <= 0) {
-                    const hit = game.explosions.some(e => e.c === center.c && e.r === center.r);
+                    const hit      = game.explosions.some(e => e.c === center.c && e.r === center.r);
                     const enemyHit = game.entities.some(e => e.type === 'enemy' && Math.abs(e.x - this.x) < 30 && Math.abs(e.y - this.y) < 30);
-                    if (hit || enemyHit) this.die();
+                    if (hit || enemyHit) this.die(game);
                 }
             }
 
             collectPowerup(p) {
                 if (p.type === 'range') this.bombRange++;
-                if (p.type === 'speed') this.speed = Math.min(this.speed + 50, 450); 
-                if (p.type === 'bomb') this.maxBombs++;
+                if (p.type === 'speed') this.speed = Math.min(this.speed + 50, 450);
+                if (p.type === 'bomb')  this.maxBombs++;
             }
 
             placeBomb(game) {
@@ -1053,11 +1137,12 @@
                 AudioEngine.playBombPlant();
             }
 
-            die() {
+            die(game) {
                 if (this.lives > 0) {
                     this.lives--;
                     this.invincible = 2;
                     AudioEngine.playDie();
+                    if (game) game.logEvent('死亡', `P${this.id} 死亡，剩餘 ${this.lives} 命`);
                     if (this.lives <= 0) this.alive = false;
                 }
             }
@@ -1079,35 +1164,27 @@
                 super(c, r, 'enemy');
                 this.difficulty = difficulty;
                 this.dir = {x: 1, y: 0};
-                
-                // Difficulty Settings
-                if (this.difficulty === 'easy') this.speed = 80;
+                if (this.difficulty === 'easy')   this.speed = 80;
                 else if (this.difficulty === 'normal') this.speed = 120;
-                else if (this.difficulty === 'hard') this.speed = 170;
+                else if (this.difficulty === 'hard')   this.speed = 170;
             }
 
             update(dt, game) {
-                let moveX = this.dir.x * this.speed * dt;
-                let moveY = this.dir.y * this.speed * dt;
-
-                // AI: Hard mode tracking logic
                 if (this.difficulty === 'hard' && Math.random() < 0.02) {
-                    // Try to align with player
                     const p1 = game.entities.find(e => e.id === 1 && e.alive);
                     if (p1) {
-                        if (Math.abs(p1.x - this.x) > Math.abs(p1.y - this.y)) {
-                            this.dir = (p1.x > this.x) ? {x:1, y:0} : {x:-1, y:0};
-                        } else {
-                            this.dir = (p1.y > this.y) ? {x:0, y:1} : {x:0, y:-1};
-                        }
+                        if (Math.abs(p1.x - this.x) > Math.abs(p1.y - this.y))
+                            this.dir = (p1.x > this.x) ? {x:1,y:0} : {x:-1,y:0};
+                        else
+                            this.dir = (p1.y > this.y) ? {x:0,y:1} : {x:0,y:-1};
                     }
                 }
 
-                const nextX = this.x + moveX;
-                const nextY = this.y + moveY;
+                const nextX = this.x + this.dir.x * this.speed * dt;
+                const nextY = this.y + this.dir.y * this.speed * dt;
 
                 if (this.checkCollision(nextX, nextY, game) || Math.random() < 0.01) {
-                    const dirs = [{x:1,y:0}, {x:-1,y:0}, {x:0,y:1}, {x:0,y:-1}];
+                    const dirs = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
                     this.dir = dirs[Math.floor(Math.random() * dirs.length)];
                 } else {
                     this.x = nextX;
@@ -1117,22 +1194,22 @@
                 const pos = this.getGridPos();
                 if (game.explosions.some(e => e.c === pos.c && e.r === pos.r)) {
                     this.alive = false;
+                    game.killCount++;                              // ← 統計
+                    game.logEvent('擊殺', `敵人被消滅（${this.difficulty}），共 ${game.killCount} 隻`);
                     AudioEngine.playDie();
                 }
             }
 
             draw(ctx) {
-                // Color based on difficulty
-                if (this.difficulty === 'easy') ctx.fillStyle = '#88cc88'; // Greenish
-                else if (this.difficulty === 'normal') ctx.fillStyle = '#e67e22'; // Orange
-                else ctx.fillStyle = '#d63031'; // Angry Red
+                if (this.difficulty === 'easy')   ctx.fillStyle = '#88cc88';
+                else if (this.difficulty === 'normal') ctx.fillStyle = '#e67e22';
+                else ctx.fillStyle = '#d63031';
 
                 ctx.beginPath();
                 const w = Math.sin(Date.now() / 100) * 2;
                 ctx.arc(this.x + TILE_SIZE/2, this.y + TILE_SIZE/2, (this.w/2) - 2 + w, 0, Math.PI*2);
                 ctx.fill();
-                
-                // Angry eyebrows for hard mode
+
                 if (this.difficulty === 'hard') {
                     ctx.fillStyle = '#000';
                     ctx.beginPath();
@@ -1142,7 +1219,6 @@
                     ctx.lineTo(this.x + 35, this.y + 30);
                     ctx.stroke();
                 }
-                
                 ctx.fillStyle = '#000';
                 ctx.fillRect(this.x + 20, this.y + 25, 5, 5);
                 ctx.fillRect(this.x + 40, this.y + 25, 5, 5);
@@ -1151,11 +1227,11 @@
 
         class Bomb {
             constructor(c, r, range, owner, game) {
-                this.c = c;
-                this.r = r;
-                this.range = range;
-                this.owner = owner;
-                this.timer = 2.0;
+                this.c        = c;
+                this.r        = r;
+                this.range    = range;
+                this.owner    = owner;
+                this.timer    = 2.0;
                 this.exploded = false;
                 this.passableEntities = [];
                 if (game) {
@@ -1185,8 +1261,9 @@
                 this.owner.placedBombs--;
                 AudioEngine.playExplosion();
                 game.explosions.push(new Explosion(this.c, this.r));
-                const dirs = [{x:0, y:-1}, {x:0, y:1}, {x:-1, y:0}, {x:1, y:0}];
-                
+
+                let comboCount = 0;
+                const dirs = [{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}];
                 dirs.forEach(d => {
                     for (let i = 1; i <= this.range; i++) {
                         const nc = this.c + (d.x * i);
@@ -1194,61 +1271,56 @@
                         if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) break;
                         if (game.map[nr][nc] === TILE_WALL) break;
                         game.explosions.push(new Explosion(nc, nr));
-                        
                         if (game.map[nr][nc] === TILE_SOFT) {
                             game.map[nr][nc] = TILE_FLOOR;
                             const dropChance = frenzyMode ? 0.8 : 0.3;
                             if (Math.random() < dropChance) {
                                 const types = ['range', 'speed', 'bomb'];
-                                const type = types[Math.floor(Math.random() * types.length)];
-                                game.powerups.push({c: nc, r: nr, type: type});
+                                game.powerups.push({c: nc, r: nr, type: types[Math.floor(Math.random() * types.length)]});
                             }
                             break;
                         }
                     }
                 });
+
+                // 計算單次連爆殺敵（在爆炸區範圍內的敵人）
+                comboCount = game.entities.filter(e =>
+                    e.type === 'enemy' &&
+                    game.explosions.some(ex => ex.c === e.getGridPos().c && ex.r === e.getGridPos().r)
+                ).length;
+                if (comboCount > game.maxCombo) game.maxCombo = comboCount;
             }
         }
 
         class Explosion {
             constructor(c, r) {
-                this.c = c;
-                this.r = r;
+                this.c = c; this.r = r;
                 this.timer = 0.5;
                 this.active = true;
             }
-            update(dt) {
-                this.timer -= dt;
-                if (this.timer <= 0) this.active = false;
-            }
+            update(dt) { this.timer -= dt; if (this.timer <= 0) this.active = false; }
         }
 
         /* ================= EDITOR & UI LOGIC ================= */
         const gameInstance = new Game();
 
-        const diffLabels = { 'easy': '簡單', 'normal': '普通', 'hard': '困難' };
+        const diffLabels = { easy: '簡單', normal: '普通', hard: '困難' };
         document.getElementById('btn-diff').innerText = diffLabels[currentDifficulty];
 
         function toggleDifficulty() {
-            if (currentDifficulty === 'easy') currentDifficulty = 'normal';
+            if (currentDifficulty === 'easy')        currentDifficulty = 'normal';
             else if (currentDifficulty === 'normal') currentDifficulty = 'hard';
-            else currentDifficulty = 'easy';
-            
+            else                                     currentDifficulty = 'easy';
             const btn = document.getElementById('btn-diff');
-            btn.innerText = diffLabels[currentDifficulty];
-            btn.style.color = currentDifficulty === 'hard' ? '#ff4444' : '#fff';
+            btn.innerText    = diffLabels[currentDifficulty];
+            btn.style.color  = currentDifficulty === 'hard' ? '#ff4444' : '#fff';
         }
 
         function toggleFrenzy() {
             frenzyMode = !frenzyMode;
             const btn = document.getElementById('btn-frenzy');
-            if (frenzyMode) {
-                btn.innerText = "ON";
-                btn.classList.add('active');
-            } else {
-                btn.innerText = "OFF";
-                btn.classList.remove('active');
-            }
+            btn.innerText = frenzyMode ? "ON" : "OFF";
+            frenzyMode ? btn.classList.add('active') : btn.classList.remove('active');
         }
 
         function startGame(mode) {
@@ -1264,7 +1336,7 @@
             gameInstance.isRunning = false;
         }
 
-        /* --- EDITOR FUNCTIONS --- */
+        /* ---- EDITOR ---- */
         let editorMap = [];
 
         function openEditor() {
@@ -1276,37 +1348,28 @@
         function initEditorGrid() {
             const grid = document.getElementById('editor-grid');
             grid.innerHTML = '';
-            
-            if (customMapData) {
-                editorMap = JSON.parse(JSON.stringify(customMapData));
-            } else {
+            if (customMapData) { editorMap = JSON.parse(JSON.stringify(customMapData)); }
+            else {
                 editorMap = [];
                 for (let r = 0; r < ROWS; r++) {
                     const row = [];
                     for (let c = 0; c < COLS; c++) {
-                        if (r === 0 || c === 0 || r === ROWS - 1 || c === COLS - 1) row.push(TILE_WALL);
+                        if (r === 0 || c === 0 || r === ROWS-1 || c === COLS-1) row.push(TILE_WALL);
                         else if (r % 2 === 0 && c % 2 === 0) row.push(TILE_WALL);
                         else row.push(TILE_FLOOR);
                     }
                     editorMap.push(row);
                 }
             }
-
             for (let r = 0; r < ROWS; r++) {
                 for (let c = 0; c < COLS; c++) {
                     const cell = document.createElement('div');
                     cell.classList.add('editor-cell');
                     cell.dataset.r = r;
                     cell.dataset.c = c;
-                    
                     const isSpawn = (r===1 && c===1) || (r===ROWS-2 && c===COLS-2);
-                    if(isSpawn) cell.classList.add('cell-spawn');
-
-                    cell.onclick = () => {
-                        if (isSpawn) return;
-                        toggleEditorTile(r, c, cell);
-                    };
-                    
+                    if (isSpawn) cell.classList.add('cell-spawn');
+                    cell.onclick = () => { if (isSpawn) return; toggleEditorTile(r, c, cell); };
                     updateCellVisual(cell, editorMap[r][c]);
                     grid.appendChild(cell);
                 }
@@ -1314,17 +1377,15 @@
         }
 
         function toggleEditorTile(r, c, cell) {
-            let val = editorMap[r][c];
-            val = (val + 1) % 3;
-            editorMap[r][c] = val;
-            updateCellVisual(cell, val);
+            editorMap[r][c] = (editorMap[r][c] + 1) % 3;
+            updateCellVisual(cell, editorMap[r][c]);
         }
 
         function updateCellVisual(cell, val) {
             cell.classList.remove('cell-floor', 'cell-wall', 'cell-soft');
             if (val === TILE_FLOOR) cell.classList.add('cell-floor');
-            else if (val === TILE_WALL) cell.classList.add('cell-wall');
-            else if (val === TILE_SOFT) cell.classList.add('cell-soft');
+            else if (val === TILE_WALL)  cell.classList.add('cell-wall');
+            else if (val === TILE_SOFT)  cell.classList.add('cell-soft');
         }
 
         function saveAndCloseEditor() {
@@ -1334,21 +1395,17 @@
         }
 
         function clearEditorMap() {
-             for (let r = 1; r < ROWS - 1; r++) {
-                for (let c = 1; c < COLS - 1; c++) {
-                     if (!((r===1 && c===1) || (r===ROWS-2 && c===COLS-2))) {
-                         editorMap[r][c] = TILE_FLOOR;
-                     }
-                }
-            }
-            initEditorGrid(); 
+            for (let r = 1; r < ROWS-1; r++)
+                for (let c = 1; c < COLS-1; c++)
+                    if (!((r===1 && c===1) || (r===ROWS-2 && c===COLS-2)))
+                        editorMap[r][c] = TILE_FLOOR;
+            initEditorGrid();
         }
 
         function cancelEditor() {
             document.getElementById('editor-ui').classList.add('hidden');
             document.getElementById('main-menu').classList.remove('hidden');
         }
-
     </script>
 </body>
 </html>
