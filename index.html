@@ -419,7 +419,7 @@ const CANVAS_WIDTH = COLS * TILE_SIZE, CANVAS_HEIGHT = ROWS * TILE_SIZE;
 const TILE_FLOOR = 0, TILE_WALL = 1, TILE_SOFT = 2;
 
 // ✅ GAS 網址（已寫入）
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyf5p1r4s3_lcd6fkA9HndUHdkEKR9glAge7Lov3ekQlS-mRAakJOlgWLQSU7vKfiAi/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx0lgPWUcFtqAr5dVmXKcOQpa0Fi3Ikg6BMZsbs04EQlWTXp1RVAz1pbJV4aQHzbfXJ/exec';
 
 let currentDifficulty = 'normal';
 let frenzyMode = false;
@@ -756,7 +756,7 @@ class Game {
 
     buildPayload(result) {
         return {
-            mode:currentDifficulty==='easy'?'easy':this.mode, difficulty:currentDifficulty,
+            mode:this.mode, difficulty:currentDifficulty,
             frenzy:frenzyMode, level:this.level, result,
             timeSec:Math.round(this.levelTimer),
             p1Lives:this.p1?this.p1.lives:0, p1MaxBombs:this.p1?this.p1.maxBombs:0,
